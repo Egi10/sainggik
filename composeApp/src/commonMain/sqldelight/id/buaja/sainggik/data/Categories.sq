@@ -1,0 +1,30 @@
+import id.buaja.sainggik.core.database.entity.CategoriesTypeEntity;
+
+CREATE TABLE categories (
+    id INTEGER NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    type TEXT AS CategoriesTypeEntity NOT NULL,
+    icon_resource_name TEXT,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+
+insertCategory:
+INSERT INTO categories(id, name, type, icon_resource_name, created_at, updated_at)
+VALUES (?, ?, ?, ?, ?, ?);
+
+updateCategory:
+UPDATE categories
+SET name = ?, type = ?, icon_resource_name = ?, updated_at = ?
+WHERE id = ?;
+
+deleteCategory:
+DELETE FROM categories
+WHERE id = ?;
+
+selectAllCategories:
+SELECT id, name, type, icon_resource_name, created_at FROM categories;
+
+selectCategoriesByType:
+SELECT id, name, type, icon_resource_name, created_at FROM categories
+WHERE type = ?;

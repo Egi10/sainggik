@@ -1,0 +1,93 @@
+CREATE TABLE budgets (
+    id INTEGER NOT NULL PRIMARY KEY,
+    category_id INTEGER NOT NULL REFERENCES categories(id),
+    start_date TEXT NOT NULL, -- YYYY-MM-DD
+    end_date TEXT NOT NULL,   -- YYYY-MM-DD
+    amount_limit REAL NOT NULL,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+
+insertBudget:
+INSERT INTO budgets(
+    id,
+    category_id,
+    start_date,
+    end_date,
+    amount_limit,
+    created_at,
+    updated_at
+) VALUES (?, ?, ?, ?, ?, ?, ?);
+
+selectBudgetById:
+SELECT
+    id,
+    category_id,
+    start_date,
+    end_date,
+    amount_limit,
+    created_at,
+    updated_at
+FROM budgets
+WHERE id = :budgetId;
+
+updateBudget:
+UPDATE budgets
+SET start_date = ?, end_date = ?, amount_limit = ?, updated_at = ?
+WHERE id = ?;
+
+deleteBudget:
+DELETE FROM budgets
+WHERE id = ?;
+
+selectAllBudgetsWithCategory:
+SELECT budgets.id, budgets.category_id, budgets.start_date, budgets.end_date, budgets.amount_limit,
+    budgets.created_at, categories.name AS category_name
+FROM budgets
+JOIN categories ON budgets.category_id == categories.id
+ORDER BY start_date DESC;
+
+selectBudgetSummary:
+SELECT budgets.id AS budget_id, budgets.start_date, budgets.end_date, budgets.amount_limit AS budget_amount,
+    categories.id AS category_id, categories.name AS category_name,
+    IFNULL(SUM(transactions.amount), 0) AS spent_amount,
+    (budgets.amount_limit - IFNULL(SUM(transactions.amount), 0)) AS remaining_amount
+FROM budgets
+JOIN categories ON budgets.category_id = categories.id
+LEFT JOIN transactions ON transactions.category_id = categories.id
+    AND transactions.transaction_date BETWEEN budgets.start_date AND budgets.end_date
+GROUP BY budgets.id, categories.id;
+
+getBudgetsExceedingThreshold:
+SELECT
+    budgets.id AS budget_id,
+    budgets.category_id,
+    categories.name AS category_name,
+    budgets.start_date,
+    budgets.end_date,
+    budgets.amount_limit,
+    COALESCE(SUM(transactions.amount), 0) AS total_expense,
+    ROUND(
+        (COALESCE(SUM(transactions.amount), 0) * 100.0) / NULLIF(budgets.amount_limit, 0),
+        2
+    ) AS expense_percentage
+FROM budgets
+INNER JOIN categories
+    ON budgets.category_id = categories.id
+LEFT JOIN transactions
+    ON transactions.category_id = budgets.category_id
+    AND transactions.transaction_date BETWEEN budgets.start_date AND budgets.end_date
+WHERE budgets.id IN (
+    SELECT MAX(id)
+    FROM budgets
+    GROUP BY category_id
+)
+GROUP BY
+    budgets.id,
+    budgets.category_id,
+    categories.name,
+    budgets.start_date,
+    budgets.end_date,
+    budgets.amount_limit
+HAVING expense_percentage >= :thresholdPercent
+ORDER BY expense_percentage DESC;

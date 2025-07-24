@@ -1,0 +1,70 @@
+<resources>
+    <string name="title_edit_budget">Edit Anggaran</string>
+    <string name="title_add_budget">Tambah Anggaran</string>
+    <string name="title_spending_overview">Ringkasan Pengeluaran</string>
+    <string name="title_top_spending">Pengeluaran Tertinggi</string>
+    <string name="title_recent_spending_trend">Tren Pengeluaran Terakhir</string>
+    <string name="title_budget_alert">Peringatan Anggaran</string>
+    <string name="title_transactions">Transaksi</string>
+
+    <string name="label_category">Kategori</string>
+    <string name="label_budget_amount">Jumlah Anggaran</string>
+    <string name="label_period">Periode Anggaran</string>
+    <string name="label_start_date">Tanggal Mulai</string>
+    <string name="label_end_date">Tanggal Selesai</string>
+    <string name="label_total_income">Total Pemasukan</string>
+    <string name="label_total_expense">Total Pengeluaran</string>
+    <string name="label_remaining_balance">Saldo Tersisa</string>
+    <string name="label_category_spending">Pengeluaran per Kategori</string>
+    <string name="label_budget_alert_period">Dari %1$s hingga %2$s. Lihat rincian.</string>
+    <string name="label_expenses">Pengeluaran</string>
+    <string name="label_income">Pemasukan</string>
+
+    <string name="placeholder_select_category">Pilih Kategori</string>
+    <string name="placeholder_budget_amount">Masukkan Jumlah Anggaran</string>
+    <string name="placeholder_start_date">Pilih Tanggal Mulai</string>
+    <string name="placeholder_end_date">Pilih Tanggal Selesai</string>
+
+    <string name="desc_total_income">Total pemasukan %1$s</string>
+    <string name="desc_total_expense">Total pengeluaran %1$s</string>
+    <string name="desc_remaining_balance">Saldo tersisa %1$s</string>
+    <string name="desc_spending_percentage">%1$s dari total pengeluaran %2$s</string>
+    <string name="desc_percentage_calculation">Persentase dihitung berdasarkan total pengeluaran %1$s</string>
+    <string name="desc_average_daily_spending">Rata-rata pengeluaran harian: %1$s</string>
+    <string name="desc_exceeded_budget_categories">Kamu telah melebihi anggaran di %1$d kategori</string>
+
+    <string name="button_save_budget">Simpan Anggaran</string>
+    <string name="button_edit_budget">Perbarui Anggaran</string>
+
+    <string name="error_load_category_list">Gagal memuat daftar kategori.</string>
+    <string name="error_save_budget">Gagal menyimpan anggaran.</string>
+    <string name="error_load_transactions">Gagal memuat transaksi</string>
+    <string name="error_fetch_transactions_desc">Terjadi kesalahan saat mengambil data transaksi.</string>
+
+    <string name="filter_this_week">Minggu Ini</string>
+    <string name="filter_this_month">Bulan Ini</string>
+    <string name="filter_custom">Tanggal Kustom</string>
+
+    <string name="button_view_details">Lihat Rincian ➝</string>
+
+    <string name="empty_no_spending_title">Data Pengeluaran Tidak Tersedia</string>
+    <string name="empty_no_spending_desc">Mulai catat pengeluaranmu untuk melihat rincian pengeluaran di sini.</string>
+    <string name="empty_no_daily_spending_title">Data Pengeluaran Harian Tidak Tersedia</string>
+    <string name="empty_no_daily_spending_desc">Catat pengeluaran harianmu untuk melihat tren pengeluaran dari waktu ke waktu.</string>
+    <string name="empty_no_budget_alerts_title">Tidak Ada Peringatan Anggaran</string>
+    <string name="empty_no_budget_alerts_desc">Saat ini kamu tidak memiliki peringatan anggaran. Tetaplah sesuai anggaran untuk menghindari peringatan.</string>
+    <string name="empty_no_transactions_title">Tidak Ada Transaksi Ditemukan</string>
+    <string name="empty_no_transactions_desc">Sepertinya tidak ada transaksi yang sesuai dengan filter saat ini. Coba atur ulang filter atau tambahkan transaksi baru untuk melihat aktivitas keuanganmu.</string>
+    <string name="empty_no_budgets_title">Belum Ada Anggaran</string>
+    <string name="empty_no_budgets_desc">Buat anggaran untuk mulai melacak cara kamu menabung dan membelanjakan uang.</string>
+
+    <string-array name="array_day_initials">
+        <item>Sen</item> <!-- Senin -->
+        <item>Sel</item> <!-- Selasa -->
+        <item>Rab</item> <!-- Rabu -->
+        <item>Kam</item> <!-- Kamis -->
+        <item>Jum</item> <!-- Jumat -->
+        <item>Sab</item> <!-- Sabtu -->
+        <item>Min</item> <!-- Minggu -->
+    </string-array>
+</resources>

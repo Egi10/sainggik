@@ -1,0 +1,9 @@
+INSERT INTO categories (id, name, type, icon_resource_name, created_at, updated_at) VALUES
+(1, 'Makanan & Minuman', 'EXPENSE', 'ic_food', '2025-05-01T08:00:00Z', '2025-05-01T08:00:00Z'),
+(2, 'Transportasi', 'EXPENSE', 'ic_transport', '2025-05-01T08:15:00Z', '2025-05-01T08:15:00Z'),
+(3, 'Belanja', 'EXPENSE', 'ic_shopping', '2025-05-01T08:30:00Z', '2025-05-01T08:30:00Z'),
+(4, 'Tagihan', 'EXPENSE', 'ic_bills', '2025-05-01T08:45:00Z', '2025-05-01T08:45:00Z'),
+(5, 'Hiburan', 'EXPENSE', 'ic_entertainment', '2025-05-01T09:00:00Z', '2025-05-01T09:00:00Z'),
+(6, 'Gaji', 'INCOME', 'ic_salary', '2025-05-01T09:15:00Z', '2025-05-01T09:15:00Z'),
+(7, 'Bonus', 'INCOME', 'ic_bonus', '2025-05-01T09:30:00Z', '2025-05-01T09:30:00Z'),
+(8, 'Investasi', 'INCOME', 'ic_investment', '2025-05-01T09:45:00Z', '2025-05-01T09:45:00Z');

@@ -1,0 +1,94 @@
+CREATE TABLE transactions (
+    id INTEGER NOT NULL PRIMARY KEY,
+    amount REAL NOT NULL,
+    category_id INTEGER NOT NULL REFERENCES categories(id),
+    note TEXT,
+    transaction_date TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+
+insertTransaction:
+INSERT INTO transactions(
+    id,
+    amount,
+    category_id,
+    note,
+    transaction_date,
+    created_at,
+    updated_at
+) VALUES (?, ?, ?, ?, ?, ?, ?);
+
+selectAllTransactionByCategoryType:
+SELECT transactions.id, transactions.amount, transactions.note, transactions.transaction_date, transactions.created_at,
+    categories.name AS category_name, categories.type AS category_type
+FROM transactions
+INNER JOIN categories ON transactions.category_id = categories.id
+WHERE categories.type = ?;
+
+selectAllTransactionById:
+SELECT transactions.id, transactions.amount, transactions.note, transactions.transaction_date, transactions.created_at,
+    categories.name AS category_name, categories.type AS category_type, categories.id AS category_id
+FROM transactions
+INNER JOIN categories ON transactions.category_id = categories.id
+WHERE transactions.id = ?;
+
+updateTransaction:
+UPDATE transactions
+SET amount = ?, category_id = ?, note = ?, transaction_date = ?, updated_at = ?
+WHERE id = ?;
+
+deleteTransaction:
+DELETE FROM transactions
+WHERE id = ?;
+
+getSummaryTransactionsByDateRange:
+SELECT
+    SUM(CASE WHEN categories.type = 'INCOME' THEN transactions.amount ELSE 0 END) AS total_income,
+    SUM(CASE WHEN categories.type = 'EXPENSE' THEN transactions.amount ELSE 0 END) AS total_expense,
+    SUM(CASE
+        WHEN categories.type = 'INCOME' THEN transactions.amount
+        WHEN categories.type = 'EXPENSE' THEN -transactions.amount
+        ELSE 0
+    END) AS remaining_balance
+FROM transactions
+LEFT JOIN categories ON transactions.category_id = categories.id
+WHERE transaction_date BETWEEN :startDate AND :endDate;
+
+getTransactionSpendingByDateRange:
+SELECT
+    categories.id AS category_id,
+    categories.name AS category_name,
+    COALESCE(SUM(transactions.amount), 0) AS total_expense,
+    ROUND(
+        COALESCE(SUM(transactions.amount), 0) * 100.0 / NULLIF(total_expense_table.total_all_expense, 0),
+        2
+    ) AS expense_percentage,
+    total_expense_table.total_all_expense
+FROM categories
+LEFT JOIN transactions
+    ON transactions.category_id = categories.id
+    AND transactions.transaction_date BETWEEN :startDate AND :endDate
+CROSS JOIN (
+    SELECT COALESCE(SUM(expense_transactions.amount), 0) AS total_all_expense
+    FROM transactions AS expense_transactions
+    INNER JOIN categories AS income_categories
+        ON expense_transactions.category_id = income_categories.id
+    WHERE income_categories.type = 'EXPENSE'
+      AND expense_transactions.transaction_date BETWEEN :startDate AND :endDate
+) AS total_expense_table
+WHERE categories.type = 'EXPENSE'
+GROUP BY categories.id, categories.name, total_expense_table.total_all_expense
+ORDER BY total_expense DESC;
+
+getDailyTransactionSpendingByDateRange:
+SELECT
+    transactions.transaction_date AS date,
+    COALESCE(SUM(transactions.amount), 0) AS total_expense
+FROM transactions
+INNER JOIN categories
+    ON transactions.category_id = categories.id
+WHERE categories.type = 'EXPENSE'
+  AND transactions.transaction_date BETWEEN :startDate AND :endDate
+GROUP BY transactions.transaction_date
+ORDER BY transactions.transaction_date ASC;
